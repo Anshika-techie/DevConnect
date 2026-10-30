@@ -27,3 +27,6 @@ media/
 
 # Backup project
 devconnect_backup/
+
+# Django deployment generated files
+staticfiles/
