@@ -3,6 +3,10 @@
 **Connect. Collaborate. Build.**
 
 DevConnect is a web-based developer collaboration platform that helps developers discover projects, connect with like-minded people, and build teams based on their technical skills and interests.
+.
+🌐 **Live Demo:** https://devconnect-sdyy.onrender.com
+
+
 
 The platform provides a centralized space where developers can create projects, apply to join teams, communicate with team members, and collaborate on development ideas.
 
