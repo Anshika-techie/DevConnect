@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto">
+
+    <div class="class bg-[#111827] border border-slate-800 rounded-3xl overflow-hidden">
+
+        <!-- Cover Image -->
+
+        <div class="relative">
+
+            {% if profile.cover_image %}
+
+            <img
+                src="{{ profile.cover_image.url }}"
+                class="w-full h-64 object-cover">
+
+            {% else %}
+
+            <div class="h-64 bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900">
+            </div>
+
+            {% endif %}
+
+            <input
+                type="file"
+                id="cover-upload"
+                class="hidden"
+                accept="image/*">
+
+            <label
+                for="cover-upload"
+                class="absolute top-4 right-4 bg-black/60 hover:bg-black px-4 py-2 rounded-xl cursor-pointer">
+
+                📷 Change Cover
+
+            </label>
+
+        </div>
+
+        <!-- Profile Section -->
+
+        <div class="px-10 pb-10">
+
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between">
+
+                <div>
+
+                    <!-- Profile Image -->
+
+                    <div class="-mt-20 relative w-fit">
+
+                        {% if profile.profile_image %}
+
+                        <img
+                            src="{{ profile.profile_image.url }}"
+                            class="w-40 h-40 rounded-full object-cover border-4 border-[#111827]">
+
+                        {% else %}
+
+                        <div class="w-40 h-40 rounded-full bg-purple-600 border-4 border-[#111827] flex items-center justify-center text-6xl font-bold">
+
+                            {{ request.user.username|first|upper }}
+
+                        </div>
+
+                        {% endif %}
+
+                        <input
+                            type="file"
+                            id="profile-upload"
+                            class="hidden"
+                            accept="image/*">
+
+                        <label
+                            for="profile-upload"
+                            class="absolute bottom-2 right-2 bg-purple-600 hover:bg-purple-700 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer">
+
+                            ✏️
+
+                        </label>
+
+                    </div>
+
+                    <!-- User Info -->
+
+                    <h1 class="text-4xl font-bold mt-5">
+                        {{ request.user.username }}
+                    </h1>
+
+                    <p class="text-gray-400 mt-2">
+                        🎓 {{ profile.college }}
+                    </p>
+
+                    <div class="mt-4">
+
+                        <span class="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-full">
+
+                            {{ profile.experience_level }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-6 lg:mt-0">
+
+                    <a
+                        href="/edit-profile/"
+                        class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold">
+
+                        Edit Profile
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- About -->
+
+            <div class="mt-10 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+                <h2 class="text-2xl font-bold mb-4">
+                    About
+                </h2>
+
+                <p class="text-gray-300">
+
+                    {% if profile.bio %}
+                        {{ profile.bio }}
+                    {% else %}
+                        No bio added yet.
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+            <!-- Skills -->
+
+            <div class="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+                <h2 class="text-2xl font-bold mb-4">
+                    Skills
+                </h2>
+
+                <div class="flex flex-wrap gap-3">
+
+                    {% if profile.skills %}
+
+                    <span class="bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full">
+                        {{ profile.skills }}
+                    </span>
+
+                    {% else %}
+
+                    <span class="text-gray-400">
+                        No skills added.
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- Links -->
+
+            <div class="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+                <h2 class="text-2xl font-bold mb-4">
+                    Links & Resume
+                </h2>
+
+                <div class="flex flex-wrap gap-4">
+
+                    {% if profile.github_link %}
+
+                    <a
+                        href="{{ profile.github_link }}"
+                        target="_blank"
+                        class="bg-[#111827] border border-slate-700 hover:border-purple-500 px-5 py-3 rounded-xl transition">
+
+                        GitHub →
+                    </a>
+
+                    {% endif %}
+
+                    {% if profile.linkedin_link %}
+
+                    <a
+                        href="{{ profile.linkedin_link }}"
+                        target="_blank"
+                        class="bg-[#111827] border border-slate-700 hover:border-purple-500 px-5 py-3 rounded-xl transition">
+
+                        LinkedIn →
+                    </a>
+
+                    {% endif %}
+
+                    {% if profile.resume %}
+
+                    <a
+                        href="{{ profile.resume.url }}"
+                        target="_blank"
+                        class="bg-green-600 hover:bg-green-700 px-5 py-3 rounded-xl transition">
+
+                        Resume 📄
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const profileUpload =
+document.getElementById('profile-upload');
+
+if(profileUpload){
+
+    profileUpload.addEventListener('change', function(){
+
+        let formData = new FormData();
+
+        formData.append(
+            'profile_image',
+            this.files[0]
+        );
+
+        fetch('/upload-profile-image/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(() => location.reload());
+
+    });
+
+}
+
+const coverUpload =
+document.getElementById('cover-upload');
+
+if(coverUpload){
+
+    coverUpload.addEventListener('change', function(){
+
+        let formData = new FormData();
+
+        formData.append(
+            'cover_image',
+            this.files[0]
+        );
+
+        fetch('/upload-cover-image/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(() => location.reload());
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,343 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <style>
+
+.light-mode{
+    background:#f8fafc !important;
+    color:#0f172a !important;
+}
+
+.light-mode aside{
+    background:#ffffff !important;
+    border-color:#e2e8f0 !important;
+}
+
+.light-mode .card{
+    background:#ffffff !important;
+    border-color:#e2e8f0 !important;
+    color:#0f172a !important;
+}
+
+.light-mode input,
+.light-mode select,
+.light-mode textarea{
+    background:#ffffff !important;
+    color:#0f172a !important;
+    border-color:#cbd5e1 !important;
+}
+
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevConnect</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body id="body" class="bg-[#020817] text-white">
+
+<div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+
+    <aside class="w-64 bg-[#0f172a] border-r border-slate-800 flex flex-col">
+
+        <div class="p-6 border-b border-slate-800">
+
+            <div class="flex items-center gap-3">
+
+                <img
+                    src="{% static 'images/logo.png' %}"
+                    alt="Logo"
+                    class="w-10 h-10">
+
+                <h1 class="text-2xl font-bold">
+                    DevConnect
+                </h1>
+
+            </div>
+
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2">
+
+            <a href="/" class="block p-3 rounded-xl hover:bg-slate-800">
+                Dashboard
+            </a>
+
+            <a href="/projects/" class="block p-3 rounded-xl hover:bg-slate-800">
+                Projects
+            </a>
+
+            <a href="/create-project/" class="block p-3 rounded-xl hover:bg-slate-800">
+                Create Project
+            </a>
+
+            <a href="/my-projects/" class="block p-3 rounded-xl hover:bg-slate-800">
+                My Projects
+            </a>
+
+            <a href="/my-applications/" class="block p-3 rounded-xl hover:bg-slate-800">
+                Applications
+            </a>
+
+            <a href="/saved-projects/" class="block p-3 rounded-xl hover:bg-slate-800">
+                Saved Projects
+            </a>
+
+            <a href="/profile/" class="block p-3 rounded-xl hover:bg-slate-800">
+                Profile
+            </a>
+
+        </nav>
+        <button
+    id="theme-toggle"
+    class="bg-slate-800 border border-slate-700 hover:border-purple-500 p-3 rounded-xl transition">
+
+    <i
+        id="theme-icon"
+        data-lucide="moon"
+        class="w-5 h-5">
+    </i>
+
+</button>
+
+        <div class="p-4 border-t border-slate-800">
+
+            <a
+                href="/logout/"
+                class="block p-3 rounded-xl bg-red-600 hover:bg-red-700 text-center">
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="flex-1">
+
+        <!-- Top Navbar -->
+
+        <div class="h-20 border-b border-slate-800 flex items-center justify-between px-8">
+
+            <form method="GET" action="/projects/">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search projects, people, skills..."
+        class="w-[500px] bg-slate-900 border border-slate-700 rounded-xl px-4 py-3">
+
+</form>
+
+            <div class="flex items-center gap-6">
+
+                <a
+                    href="/create-project/"
+                    class="bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-3 rounded-xl font-semibold hover:opacity-90">
+
+                    + Create Project
+
+                </a>
+
+                <!-- Notification -->
+
+                <div class="relative">
+
+                    <button
+                        id="notification-btn"
+                        class="relative">
+
+                        <i data-lucide="bell" class="w-6 h-6"></i>
+
+                        {% if unread_notifications > 0 %}
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+
+                            {{ unread_notifications }}
+
+                        </span>
+                        {% endif %}
+
+                    </button>
+
+                    <div
+                        id="notification-menu"
+                        class="hidden absolute right-0 mt-4 w-96 bg-[#111827] border border-slate-700 rounded-2xl shadow-2xl z-50">
+
+                        <div class="p-4 border-b border-slate-700">
+
+                            <h2 class="font-bold text-lg">
+                                Notifications
+                            </h2>
+
+                        </div>
+
+                        <div class="max-h-96 overflow-y-auto">
+
+                            {% for notification in recent_notifications %}
+
+                            <div class="p-4 border-b border-slate-800">
+
+                                <p>
+                                    {{ notification.message }}
+                                </p>
+
+                                <p class="text-gray-400 text-sm mt-1">
+                                    {{ notification.created_at }}
+                                </p>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="p-4 text-gray-400">
+                                No Notifications
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <a
+                            href="/notifications/"
+                            class="block text-center p-4 text-purple-400 hover:text-purple-300">
+
+                            View All Notifications
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- Profile -->
+
+                <a href="/profile/">
+
+                    {% if request.user.profile.profile_image %}
+
+                    <img
+                        src="{{ request.user.profile.profile_image.url }}"
+                        class="w-10 h-10 rounded-full object-cover border border-slate-700">
+
+                    {% else %}
+
+                    <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold">
+
+                        {{ request.user.username|first|upper }}
+
+                    </div>
+
+                    {% endif %}
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Page Content -->
+
+        <div class="p-8">
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<script type="module">
+import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/+esm';
+
+const button = document.querySelector('#emoji-btn');
+const input = document.querySelector('#message-input');
+
+const picker = new EmojiButton();
+
+button.addEventListener('click', () => {
+    picker.togglePicker(button);
+});
+
+picker.on('emoji', selection => {
+
+    input.value += selection.emoji;
+
+});
+</script>
+
+<script>
+lucide.createIcons();
+
+const body = document.getElementById("body");
+const themeBtn = document.getElementById("theme-toggle");
+
+function applyTheme(theme){
+
+    if(theme === "light"){
+
+        body.classList.add("light-mode");
+
+        themeBtn.innerHTML =
+        '<i data-lucide="sun" class="w-5 h-5"></i>';
+
+    }else{
+
+        body.classList.remove("light-mode");
+
+        themeBtn.innerHTML =
+        '<i data-lucide="moon" class="w-5 h-5"></i>';
+
+    }
+
+    lucide.createIcons();
+}
+
+const savedTheme =
+localStorage.getItem("theme") || "dark";
+
+applyTheme(savedTheme);
+
+themeBtn.addEventListener("click", () => {
+
+    const currentTheme =
+    body.classList.contains("light-mode")
+    ? "dark"
+    : "light";
+
+    localStorage.setItem(
+        "theme",
+        currentTheme
+    );
+
+    applyTheme(currentTheme);
+
+});
+
+const btn = document.getElementById('notification-btn');
+const menu = document.getElementById('notification-menu');
+
+if(btn && menu){
+
+    btn.addEventListener('click', function(){
+
+        menu.classList.toggle('hidden');
+
+    });
+
+}
+
+</script>
+</body>
+</html>

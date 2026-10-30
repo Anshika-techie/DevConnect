@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="grid grid-cols-12 gap-6">
+
+    <!-- LEFT SECTION -->
+
+    <div class="col-span-9">
+
+        <h1 class="text-5xl font-bold mb-2">
+            Welcome back, {{ request.user.username }}
+        </h1>
+
+        <p class="text-gray-400 mb-8">
+            Here's what's happening in your developer journey today.
+        </p>
+
+        <!-- Stats Cards -->
+
+        <div class="grid grid-cols-4 gap-5">
+
+            <div class="card bg-[#111827] border border-slate-800 rounded-2xl p-6">
+<div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
+    <i data-lucide="folder" class="w-6 h-6 text-purple-400"></i>
+</div>
+
+                <p class="text-gray-400">Projects Created</p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ projects_count }}
+                </h2>
+            </div>
+
+            <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6">
+                <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-4">
+    <i data-lucide="send" class="w-6 h-6 text-orange-400"></i>
+</div>
+
+                <p class="text-gray-400">Applications Sent</p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ applications_count }}
+                </h2>
+            </div>
+            <!-- <div class="card bg-[#111827] border border-slate-800 rounded-3xl p-6">
+
+    <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6">
+
+        <i data-lucide="users" class="w-7 h-7 text-blue-400"></i>
+
+    </div>
+
+    <h3 class="text-gray-400">
+        Team Members
+    </h3>
+
+    <p class="text-4xl font-bold mt-3">
+        {{ team_members_count }}
+    </p>
+
+</div> -->
+
+            <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6">
+                <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mb-4">
+    <i data-lucide="badge-check" class="w-6 h-6 text-green-400"></i>
+</div>
+
+                <p class="text-gray-400">Requests Received</p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ requests_count }}
+                </h2>
+            </div>
+
+        <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6">
+
+    <div class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center mb-4">
+        <i data-lucide="bookmark" class="w-6 h-6 text-pink-400"></i>
+    </div>
+
+    <p class="text-gray-400">
+        Saved Projects
+    </p>
+
+    <h2 class="text-4xl font-bold mt-2">
+        {{ saved_projects_count }}
+    </h2>
+
+</div>    
+<!-- <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
+    <i data-lucide="users" class="w-6 h-6 text-blue-400"></i>
+</div>
+
+                <p class="text-gray-400">Team Members</p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    0
+                </h2>
+            </div> -->
+
+        </div>
+
+        <!-- Recent Projects -->
+
+        <div class="mt-10">
+
+            <div class="flex justify-between items-center mb-5">
+
+                <h2 class="text-3xl font-bold">
+                    Recent Projects
+                </h2>
+
+                <a href="/projects/" class="text-purple-400">
+                    View All
+                </a>
+
+            </div>
+
+            <div class="grid grid-cols-2 gap-5">
+
+                {% for project in recent_projects %}
+
+                <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 hover:border-purple-500 transition">
+
+                    <div class="flex justify-between items-center">
+
+                        <h3 class="text-2xl font-bold">
+                            {{ project.title }}
+                        </h3>
+
+                        <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+                            Open
+                        </span>
+
+                    </div>
+
+                    <p class="text-gray-400 mt-3">
+                        {{ project.description|truncatechars:100 }}
+                    </p>
+
+                    <div class="mt-4">
+                        <span class="bg-slate-800 px-3 py-1 rounded-lg text-sm">
+                            {{ project.tech_stack }}
+                        </span>
+                    </div>
+                    <div class="mt-3 flex items-center gap-2 text-blue-400">
+
+    <i data-lucide="users" class="w-4 h-4"></i>
+
+    <span>
+        {{ project.current_members }}/{{ project.team_size }}
+        Members
+    </span>
+
+</div>
+
+                    <a
+                        href="/project/{{ project.id }}/"
+                        class="inline-block mt-5 text-purple-400">
+
+                        View Project →
+
+                    </a>
+
+                </div>
+
+                {% empty %}
+
+                <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6">
+                    No Projects Yet
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SECTION -->
+
+    <div class="col-span-3">
+
+        <div class="bg-[#111827] border border-slate-800 rounded-2xl p-5">
+
+            <h2 class="text-2xl font-bold mb-5">
+                Activity Feed
+            </h2>
+
+            {% for activity in activities %}
+
+            <div class="mb-4">
+
+                <p>
+                    {{ activity.message }}
+                </p>
+
+                <span class="text-gray-500 text-sm">
+                    {{ activity.created_at }}
+                </span>
+
+            </div>
+
+            {% empty %}
+
+            <p class="text-gray-500">
+                No Recent Activity
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="bg-[#111827] border border-slate-800 rounded-2xl p-5 mt-6">
+
+            <h2 class="text-2xl font-bold mb-4">
+                Recommended
+            </h2>
+
+            <div class="space-y-4">
+
+                {% for project in recommended_projects %}
+
+<div class="bg-slate-900 rounded-xl p-4">
+
+    <h3 class="font-bold">
+        {{ project.title }}
+    </h3>
+    <!-- <div class="flex justify-between mt-2 text-sm">
+
+    <span class="text-gray-400">
+        Match
+    </span>
+
+    <span class="text-green-400 font-semibold">
+        {{ project.match_score }}%
+    </span>
+
+</div> -->
+
+<div class="flex justify-between mt-2 text-sm">
+
+    <span class="text-gray-400">
+        Match
+    </span>
+
+    {% if project.match_score >= 80 %}
+
+        <span class="text-green-400 font-semibold">
+            Excellent • {{ project.match_score }}%
+        </span>
+
+    {% elif project.match_score >= 50 %}
+
+        <span class="text-yellow-400 font-semibold">
+            Good • {{ project.match_score }}%
+        </span>
+
+    {% else %}
+
+        <span class="text-red-400 font-semibold">
+            Low • {{ project.match_score }}%
+        </span>
+
+    {% endif %}
+
+</div>
+
+<div class="w-full bg-slate-800 rounded-full h-2 mt-2">
+
+    <div
+        class="
+        h-2 rounded-full transition-all duration-500
+
+        {% if project.match_score >= 80 %}
+            bg-green-500
+        {% elif project.match_score >= 50 %}
+            bg-yellow-500
+        {% else %}
+            bg-red-500
+        {% endif %}
+        "
+        style="width: {{ project.match_score }}%;">
+
+    </div>
+
+</div>
+
+
+
+    <p class="text-gray-500 text-xs mt-2">
+        {{ project.tech_stack }}
+    </p>
+
+</div>
+
+{% empty %}
+
+<div class="bg-slate-900 rounded-xl p-4">
+
+    No Recommendations Yet 🚀
+
+</div>
+
+
+
+<div class="bg-slate-900 rounded-xl p-4">
+
+    <h3 class="font-bold">
+        {{ project.title }}
+    </h3>
+
+    <p class="text-gray-400 text-sm mt-2">
+        Match Score:
+        {{ project.match_score }}%
+    </p>
+
+    <p class="text-gray-500 text-xs mt-2">
+        {{ project.tech_stack }}
+    </p>
+
+</div>
+
+{% endfor %}
+
+                
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

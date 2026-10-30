@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto">
+
+    <!-- Header -->
+
+    <div class="mb-8">
+
+        <h1 class="text-5xl font-bold">
+            My Applications
+        </h1>
+
+        <p class="text-gray-400 mt-2">
+            Track the status of all your project applications.
+        </p>
+
+    </div>
+
+    <!-- Applications -->
+
+    <div class="space-y-5">
+
+        {% for application in applications %}
+
+        <div class="class bg-[#111827] border border-slate-800 rounded-2xl p-6 hover:border-purple-500 transition">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <h2 class="text-2xl font-bold">
+                        {{ application.project.title }}
+                    </h2>
+
+                    <p class="text-gray-400 mt-2">
+                        {{ application.project.tech_stack }}
+                    </p>
+
+                </div>
+
+                {% if application.status == "Accepted" %}
+
+                <span class="bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-semibold">
+
+                    Accepted
+
+                </span>
+
+                {% elif application.status == "Rejected" %}
+
+                <span class="bg-red-500/20 text-red-400 px-4 py-2 rounded-full text-sm font-semibold">
+
+                    Rejected
+
+                </span>
+
+                {% else %}
+
+                <span class="bg-yellow-500/20 text-yellow-400 px-4 py-2 rounded-full text-sm font-semibold">
+
+                    Pending
+
+                </span>
+
+                {% endif %}
+
+            </div>
+
+            <div class="flex gap-3 mt-5">
+
+                <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg text-sm">
+
+                    {{ application.project.role_needed }}
+
+                </span>
+
+                <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg text-sm">
+
+                    {{ application.project.experience_level }}
+
+                </span>
+
+            </div>
+
+            <a
+                href="/project/{{ application.project.id }}/"
+                class="inline-block mt-5 bg-purple-600 hover:bg-purple-700 px-5 py-3 rounded-xl font-semibold transition">
+
+                View Project
+
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <div class="bg-[#111827] border border-slate-800 rounded-2xl p-12 text-center">
+
+            <h2 class="text-2xl font-bold">
+                No Applications Yet
+            </h2>
+
+            <p class="text-gray-400 mt-3">
+                Start applying to projects and they will appear here.
+            </p>
+
+            <a
+                href="/projects/"
+                class="inline-block mt-6 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold">
+
+                Explore Projects
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

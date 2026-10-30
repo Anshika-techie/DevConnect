@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto">
+
+    <!-- Header -->
+
+    <div class="mb-8">
+
+        <h1 class="text-5xl font-bold">
+            Saved Projects
+        </h1>
+
+        <p class="text-gray-400 mt-2">
+            Projects you've bookmarked for later.
+        </p>
+
+    </div>
+
+    <!-- Projects Grid -->
+
+    <div class="grid lg:grid-cols-2 gap-6">
+
+        {% for saved in saved_projects %}
+
+        <div class="class bg-[#111827] border border-slate-800 rounded-3xl p-6 hover:border-purple-500 transition">
+
+            <div class="flex justify-between items-start">
+
+    <div>
+
+        <h2 class="text-3xl font-bold">
+            {{ saved.project.title }}
+        </h2>
+
+        <p class="text-gray-400 mt-3">
+            {{ saved.project.tech_stack }}
+        </p>
+
+    </div>
+
+    <div class="flex items-center gap-3">
+
+        <i
+            data-lucide="bookmark-check"
+            class="w-5 h-5 text-yellow-400">
+        </i>
+
+        <a
+            href="/project/{{ saved.project.id }}/">
+
+            <i
+                data-lucide="eye"
+                class="w-5 h-5 text-blue-400 hover:text-blue-300">
+            </i>
+
+        </a>
+
+        <a
+            href="/unsave-project/{{ saved.project.id }}/">
+
+            <i
+                data-lucide="trash-2"
+                class="w-5 h-5 text-red-400 hover:text-red-300">
+            </i>
+
+        </a>
+
+    </div>
+
+</div>
+
+            <!-- Project Info -->
+
+            <div class="grid grid-cols-2 gap-4 mt-6">
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+
+                    <p class="text-gray-400 text-sm">
+                        Role Needed
+                    </p>
+
+                    <h3 class="font-semibold text-purple-400 mt-1">
+                        {{ saved.project.role_needed }}
+                    </h3>
+
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+
+                    <p class="text-gray-400 text-sm">
+                        Experience
+                    </p>
+
+                    <h3 class="font-semibold text-blue-400 mt-1">
+                        {{ saved.project.experience_level }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="flex gap-3 mt-6">
+
+                <a
+                    href="/project/{{ saved.project.id }}/"
+                    class="bg-purple-600 hover:bg-purple-700 px-5 py-3 rounded-xl font-semibold transition">
+
+                    View Project
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-span-2">
+
+            <div class="bg-[#111827] border border-slate-800 rounded-3xl p-12 text-center">
+
+                <div class="text-6xl mb-4">
+                    ⭐
+                </div>
+
+                <h2 class="text-2xl font-bold">
+                    No Saved Projects
+                </h2>
+
+                <p class="text-gray-400 mt-3">
+                    Save interesting projects and they'll appear here.
+                </p>
+
+                <a
+                    href="/projects/"
+                    class="inline-block mt-6 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-xl font-semibold">
+
+                    Explore Projects
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+<script>
+lucide.createIcons();
+</script>
+
+{% endblock %}

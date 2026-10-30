@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Create Account | DevConnect</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-[#020817] min-h-screen flex justify-center items-center p-6">
+
+    <div class="w-full max-w-md">
+
+        <div class="bg-[#111827] border border-slate-800 rounded-3xl p-8 shadow-xl">
+
+            <!-- Header -->
+
+            <div class="text-center mb-8">
+
+                <h1 class="text-5xl font-bold text-white">
+                    Create Account
+                </h1>
+
+                <p class="text-gray-400 mt-3">
+                    Join DevConnect and start collaborating with developers.
+                </p>
+
+            </div>
+
+            <!-- Form -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="space-y-5">
+
+                    <div>
+
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            Username
+                        </label>
+
+                        {{ form.username }}
+
+                    </div>
+
+                    <div>
+
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            Email Address
+                        </label>
+
+                        {{ form.email }}
+
+                    </div>
+
+                    <div>
+
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            Password
+                        </label>
+
+                        {{ form.password }}
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full mt-8 bg-purple-600 hover:bg-purple-700 transition py-4 rounded-xl font-semibold">
+
+                    Create Account
+
+                </button>
+
+            </form>
+
+            <!-- Login -->
+
+            <div class="text-center mt-8 pt-6 border-t border-slate-800">
+
+                <p class="text-gray-400">
+                    Already have an account?
+                </p>
+
+                <a
+                    href="/login/"
+                    class="text-purple-400 hover:text-purple-300 font-semibold transition">
+
+                    Login
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

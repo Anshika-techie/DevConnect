@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+
+    <div class="card bg-[#111827] border border-slate-800 rounded-2xl p-8">
+
+        <h1 class="text-4xl font-bold text-indigo-400 mb-8">
+            Edit Project
+        </h1>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="space-y-6">
+
+                {{ form.as_p }}
+
+            </div>
+
+            <button
+                type="submit"
+                class="mt-6 bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl">
+
+                Save Changes
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

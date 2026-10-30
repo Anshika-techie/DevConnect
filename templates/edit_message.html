@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-2xl mx-auto">
+
+    <div class="bg-[#111827] p-8 rounded-3xl">
+
+        <h1 class="text-3xl font-bold mb-6">
+            Edit Message
+        </h1>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <textarea
+                name="message"
+                rows="5"
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4">{{ message_obj.message }}</textarea>
+
+            <button
+                type="submit"
+                class="mt-5 bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl">
+
+                Save Changes
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

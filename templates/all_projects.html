@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <!-- Heading -->
+
+    <div class="flex justify-between items-center mb-8">
+
+        <div>
+
+            <h1 class="text-5xl font-bold">
+                Explore Projects
+            </h1>
+
+            <p class="text-gray-400 mt-2">
+                Discover projects and collaborate with developers.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Search & Filters -->
+
+    <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 mb-8">
+
+        <form method="GET">
+
+            <div class="grid md:grid-cols-3 gap-4">
+
+                <input
+                    type="text"
+                    name="role"
+                    placeholder="Search Role..."
+                    value="{{ request.GET.role }}"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500">
+
+                <select
+                    name="experience"
+                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500">
+
+                    <option value="">
+                        All Experience
+                    </option>
+
+                    <option value="Beginner">
+                        Beginner
+                    </option>
+
+                    <option value="Intermediate">
+                        Intermediate
+                    </option>
+
+                    <option value="Advanced">
+                        Advanced
+                    </option>
+
+                </select>
+
+                <button
+                    class="bg-purple-600 hover:bg-purple-700 rounded-xl font-semibold transition">
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Tech Search -->
+
+    <form method="GET" class="mb-8">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by Tech Stack..."
+            class="w-full bg-[#111827] border border-slate-800 rounded-2xl p-4 text-white focus:outline-none focus:border-purple-500">
+
+    </form>
+
+    <!-- Projects Grid -->
+
+    <div class="grid lg:grid-cols-2 gap-6">
+
+        {% for project in projects %}
+
+        <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 hover:border-purple-500 transition duration-300">
+
+            <div class="flex justify-between items-start">
+
+                <div>
+
+                    <h2 class="text-3xl font-bold mb-3">
+                        {{ project.title }}
+                    </h2>
+
+                    <p class="text-gray-400 line-clamp-3">
+                        {{ project.description }}
+                    </p>
+
+                </div>
+
+                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+
+                    {{ project.project_status }}
+
+                </span>
+
+            </div>
+
+            <!-- Tags -->
+
+            <div class="flex flex-wrap gap-2 mt-5">
+
+                <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg text-sm">
+                    {{ project.tech_stack }}
+                </span>
+
+                <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg text-sm">
+                    👥 {{ project.team_size }}
+                </span>
+
+                <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg text-sm">
+                    👤 {{ project.created_by.username }}
+                </span>
+
+            </div>
+
+            <!-- Project Info Cards -->
+
+            <div class="grid grid-cols-2 gap-3 mt-5">
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+
+                    <p class="text-gray-400 text-sm">
+                        Role Needed
+                    </p>
+
+                    <h3 class="font-semibold text-purple-400 mt-1">
+                        {{ project.role_needed }}
+                    </h3>
+
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+
+                    <p class="text-gray-400 text-sm">
+                        Experience
+                    </p>
+
+                    <h3 class="font-semibold text-blue-400 mt-1">
+                        {{ project.experience_level }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <!-- Button -->
+
+            <a
+                href="/project/{{ project.id }}/"
+                class="inline-block mt-6 bg-purple-600 hover:bg-purple-700 px-5 py-3 rounded-xl font-semibold transition">
+
+                View Project →
+
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-span-2">
+
+            <div class="bg-[#111827] border border-slate-800 rounded-2xl p-12 text-center">
+
+                <h2 class="text-2xl font-bold">
+                    No Projects Found
+                </h2>
+
+                <p class="text-gray-400 mt-2">
+                    Try changing your filters.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+    <!-- People Search Results -->
+
+{% if profiles %}
+
+<div class="mt-12">
+
+    <h2 class="text-3xl font-bold mb-6">
+        Developers
+    </h2>
+
+    {% for profile in profiles %}
+
+    <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 mb-4">
+
+        <h3 class="text-xl font-bold">
+            {{ profile.user.username }}
+        </h3>
+
+        <p class="text-gray-400 mt-2">
+            🎓 {{ profile.college }}
+        </p>
+
+        <p class="text-gray-300 mt-2">
+            🛠 {{ profile.skills }}
+        </p>
+
+        <a
+            href="/profile/"
+            class="inline-block mt-4 text-purple-400">
+
+            View Profile →
+
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+    <!-- Pagination -->
+
+    <div class="flex justify-center items-center gap-4 mt-10">
+
+        {% if projects.has_previous %}
+
+        <a
+            href="?page={{ projects.previous_page_number }}"
+            class="bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl hover:border-purple-500">
+
+            Previous
+
+        </a>
+
+        {% endif %}
+
+        <span class="bg-purple-600 px-5 py-2 rounded-xl font-semibold">
+
+            Page {{ projects.number }}
+
+        </span>
+
+        {% if projects.has_next %}
+
+        <a
+            href="?page={{ projects.next_page_number }}"
+            class="bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl hover:border-purple-500">
+
+            Next
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

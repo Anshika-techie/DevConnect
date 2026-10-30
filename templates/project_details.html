@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto">
+
+    <div class="class bg-[#111827] border border-slate-800 rounded-3xl overflow-hidden">
+
+        <!-- Header -->
+
+        <div class="p-8 border-b border-slate-800">
+
+            <div class="flex justify-between items-start">
+
+                <div>
+
+                    <h1 class="text-5xl font-bold">
+                        {{ project.title }}
+                    </h1>
+
+                    <p class="text-gray-400 mt-3">
+                        Created by {{ project.created_by.username }}
+                    </p>
+
+                </div>
+
+                <div class="flex items-center gap-4">
+
+                    <span class="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-xl border border-purple-500/30">
+
+                        👥 Team {{ team_count }}/{{ project.team_size }}
+
+                    </span>
+
+                    {% if project.created_by == request.user %}
+
+                    <a
+                        href="/edit-project/{{ project.id }}/"
+                        class="bg-slate-800 border border-slate-700 hover:border-blue-500 transition p-3 rounded-xl">
+
+                        <i
+                            data-lucide="square-pen"
+                            class="w-5 h-5 text-blue-400">
+                        </i>
+
+                    </a>
+
+                    <a
+                        href="/delete-project/{{ project.id }}/"
+                        class="bg-slate-800 border border-slate-700 hover:border-red-500 transition p-3 rounded-xl">
+
+                        <i
+                            data-lucide="trash-2"
+                            class="w-5 h-5 text-red-400">
+                        </i>
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Body -->
+
+        <div class="p-8">
+
+            <!-- Description -->
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+                <h2 class="text-2xl font-bold mb-4">
+                    Project Description
+                </h2>
+
+                <p class="text-gray-300 leading-8">
+                    {{ project.description }}
+                </p>
+
+            </div>
+
+            <!-- Project Info -->
+
+            <div class="grid md:grid-cols-3 gap-5 mt-6">
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+
+                    <p class="text-gray-400 mb-2">
+                        Role Needed
+                    </p>
+
+                    <h3 class="text-xl font-semibold text-purple-400">
+                        {{ project.role_needed }}
+                    </h3>
+
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+
+                    <p class="text-gray-400 mb-2">
+                        Experience Level
+                    </p>
+
+                    <h3 class="text-xl font-semibold text-blue-400">
+                        {{ project.experience_level }}
+                    </h3>
+
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+
+    <p class="text-gray-400 mb-2">
+        Status
+    </p>
+
+    {% if project.project_status == "Closed" %}
+
+        <h3 class="text-xl font-semibold text-green-400">
+            🟢 Team Formed
+        </h3>
+
+        <p class="text-gray-400 text-sm mt-2">
+            Team is complete and applications are closed.
+        </p>
+
+    {% else %}
+
+        <h3 class="text-xl font-semibold text-yellow-400">
+            🟡 Recruiting
+        </h3>
+
+        <p class="text-gray-400 text-sm mt-2">
+            Looking for team members.
+        </p>
+
+    {% endif %}
+
+</div>
+
+            <!-- Tech Stack -->
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mt-6">
+
+                <h2 class="text-2xl font-bold mb-4">
+                    Tech Stack
+                </h2>
+
+                <div class="flex flex-wrap gap-3">
+
+                    <span class="bg-[#111827] border border-slate-700 px-4 py-2 rounded-xl">
+                        {{ project.tech_stack }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- Owner -->
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mt-6">
+
+                <h2 class="text-2xl font-bold mb-4">
+                    Project Owner
+                </h2>
+
+                <div class="flex items-center gap-4">
+
+                    <div class="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center font-bold">
+
+                        {{ project.created_by.username|first|upper }}
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-semibold text-lg">
+                            {{ project.created_by.username }}
+                        </h3>
+
+                        <p class="text-gray-400">
+                            Project Creator
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+
+            {% if project.created_by != request.user %}
+
+            <div class="grid md:grid-cols-2 gap-4 mt-8">
+
+               {% if project.project_status == "Open" %}
+
+<a
+    href="/apply/{{ project.id }}/"
+    class="text-center bg-purple-600 hover:bg-purple-700 py-4 rounded-xl font-semibold transition">
+
+    Apply To Join
+
+</a>
+
+{% else %}
+
+<div
+    class="text-center bg-green-600 py-4 rounded-xl font-semibold">
+
+    ✅ Team Formed
+
+</div>
+
+{% endif %}
+
+                <a
+                    href="/save-project/{{ project.id }}/"
+                    class="text-center bg-slate-800 border border-slate-700 hover:border-purple-500 py-4 rounded-xl font-semibold transition">
+
+                    Save Project
+
+                </a>
+                <a
+                href="/chat/{{ project.id }}/"
+                class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 py-4 rounded-xl font-semibold transition">
+
+                <i
+                    data-lucide="messages-square"
+                    class="w-5 h-5">
+                </i>
+
+                Team Chat
+
+            </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+lucide.createIcons();
+</script>
+
+{% endblock %}
